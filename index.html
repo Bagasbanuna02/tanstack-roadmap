@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TanStack — Full Stack Learning Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --border: #1e1e2e;
+    --accent: #ff6b35;
+    --accent2: #7c3aed;
+    --accent3: #06b6d4;
+    --text: #e2e2f0;
+    --muted: #6b6b8a;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    z-index: 1;
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(124,58,237,0.08) 0%, transparent 100%);
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,107,53,0.1);
+    border: 1px solid rgba(255,107,53,0.3);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .header-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  h1 .highlight {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .meta-chip span {
+    color: var(--text);
+  }
+
+  /* LAYOUT */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 40px 80px;
+  }
+
+  /* OVERVIEW CARDS */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .ov-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .ov-card:hover {
+    border-color: var(--accent2);
+    transform: translateY(-2px);
+  }
+
+  .ov-card .icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .ov-card .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .ov-card .value {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* STEPS */
+  .step-section {
+    margin-bottom: 48px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+
+  .step-card.install::before { background: var(--accent3); }
+  .step-card.config::before { background: var(--accent2); }
+  .step-card.core::before { background: var(--accent); }
+  .step-card.deploy::before { background: var(--success); }
+  .step-card.tip::before { background: var(--warning); }
+
+  .step-card:hover { border-color: var(--accent2); }
+
+  .step-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+
+  .step-num {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .num-badge {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .install .num-badge { background: rgba(6,182,212,0.15); color: var(--accent3); }
+  .config .num-badge { background: rgba(124,58,237,0.15); color: var(--accent2); }
+  .core .num-badge { background: rgba(255,107,53,0.15); color: var(--accent); }
+  .deploy .num-badge { background: rgba(16,185,129,0.15); color: var(--success); }
+  .tip .num-badge { background: rgba(245,158,11,0.15); color: var(--warning); }
+
+  .step-title-wrap h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .step-title-wrap .sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .toggle-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 28px; height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .step-body {
+    display: none;
+  }
+
+  .step-body.open {
+    display: block;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-body p {
+    color: #a0a0b8;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  /* CODE BLOCKS */
+  .code-block {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 12px 0;
+    overflow: hidden;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .code-lang {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .copy-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--accent3);
+    color: var(--accent3);
+  }
+
+  .copy-btn.copied {
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  pre {
+    padding: 16px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #c9d1d9;
+    scrollbar-width: thin;
+  }
+
+  .kw { color: #ff79c6; }
+  .fn { color: #50fa7b; }
+  .str { color: #f1fa8c; }
+  .cm { color: #6272a4; font-style: italic; }
+  .im { color: #8be9fd; }
+  .num { color: #bd93f9; }
+
+  /* TAGS */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-blue { background: rgba(6,182,212,0.1); color: var(--accent3); border: 1px solid rgba(6,182,212,0.2); }
+  .tag-purple { background: rgba(124,58,237,0.1); color: #a78bfa; border: 1px solid rgba(124,58,237,0.2); }
+  .tag-orange { background: rgba(255,107,53,0.1); color: var(--accent); border: 1px solid rgba(255,107,53,0.2); }
+  .tag-green { background: rgba(16,185,129,0.1); color: var(--success); border: 1px solid rgba(16,185,129,0.2); }
+  .tag-yellow { background: rgba(245,158,11,0.1); color: var(--warning); border: 1px solid rgba(245,158,11,0.2); }
+
+  /* CALLOUT */
+  .callout {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .callout-info { background: rgba(6,182,212,0.06); border: 1px solid rgba(6,182,212,0.2); }
+  .callout-warn { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); }
+  .callout-tip { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); }
+  .callout-saran { background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.2); }
+
+  .callout-icon { font-size: 18px; flex-shrink: 0; }
+
+  .callout p {
+    margin: 0 !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    color: var(--text) !important;
+  }
+
+  .callout strong { color: inherit; }
+
+  /* CHECKLIST */
+  .checklist {
+    list-style: none;
+    margin: 12px 0;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 14px;
+    color: #a0a0b8;
+    line-height: 1.5;
+  }
+
+  .checklist li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  /* STACK VISUALIZER */
+  .stack-vis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .stack-item {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .stack-item:hover {
+    border-color: var(--accent2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(124,58,237,0.15);
+  }
+
+  .stack-item .si-icon { font-size: 28px; margin-bottom: 8px; }
+  .stack-item .si-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .stack-item .si-role { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+
+  /* PROGRESS INDICATOR */
+  .roadmap-progress {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 32px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 4px 0;
+  }
+
+  .rp-step {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .rp-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .rp-dot:hover, .rp-dot.done {
+    border-color: var(--accent);
+    background: rgba(255,107,53,0.1);
+    color: var(--accent);
+  }
+
+  .rp-line {
+    height: 2px;
+    width: 48px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .rp-dot.done + .rp-line { background: rgba(255,107,53,0.4); }
+
+  .rp-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 4px;
+    white-space: nowrap;
+  }
+
+  .rp-step-wrap { display: flex; flex-direction: column; align-items: center; }
+
+  /* Footer */
+  .footer-note {
+    margin-top: 60px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .footer-note p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .footer-note strong {
+    color: var(--accent);
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 40px 20px 30px; }
+    .container { padding: 24px 20px 60px; }
+    h1 { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">Full Stack Roadmap 2025</div>
+  <h1>Belajar <span class="highlight">TanStack</span><br>dari Nol sampai Deploy</h1>
+  <p style="color: var(--muted); font-size: 14px; margin-top: 12px; max-width: 500px;">Panduan step-by-step lengkap untuk developer yang ingin menguasai ekosistem TanStack modern — mulai setup hingga production-ready.</p>
+  <div class="header-meta">
+    <div class="meta-chip">⏱ Estimasi: <span>2–4 minggu</span></div>
+    <div class="meta-chip">🎯 Level: <span>Intermediate</span></div>
+    <div class="meta-chip">🔧 Stack: <span>TanStack + Vite + TypeScript</span></div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- OVERVIEW CARDS -->
+  <div class="overview-grid">
+    <div class="ov-card">
+      <span class="icon">🔍</span>
+      <div class="label">TanStack Query</div>
+      <div class="value">Data Fetching</div>
+    </div>
+    <div class="ov-card">
+      <span class="icon">🧭</span>
+      <div class="label">TanStack Router</div>
+      <div class="value">Routing</div>
+    </div>
+    <div class="ov-card">
+      <span class="icon">📋</span>
+      <div class="label">TanStack Table</div>
+      <div class="value">Data Tables</div>
+    </div>
+    <div class="ov-card">
+      <span class="icon">📝</span>
+      <div class="label">TanStack Form</div>
+      <div class="value">Form Management</div>
+    </div>
+    <div class="ov-card">
+      <span class="icon">🏪</span>
+      <div class="label">TanStack Store</div>
+      <div class="value">State Management</div>
+    </div>
+  </div>
+
+  <!-- ROADMAP VISUAL -->
+  <div class="section-label">Progress Roadmap</div>
+  <div style="overflow-x: auto; padding: 0 0 16px;">
+    <div class="roadmap-progress">
+      <div class="rp-step-wrap">
+        <div class="rp-dot" onclick="this.classList.toggle('done')" title="Setup">01</div>
+        <div class="rp-label">Setup</div>
+      </div>
+      <div class="rp-line"></div>
+      <div class="rp-step-wrap">
+        <div class="rp-dot" onclick="this.classList.toggle('done')">02</div>
+        <div class="rp-label">Query</div>
+      </div>
+      <div class="rp-line"></div>
+      <div class="rp-step-wrap">
+        <div class="rp-dot" onclick="this.classList.toggle('done')">03</div>
+        <div class="rp-label">Router</div>
+      </div>
+      <div class="rp-line"></div>
+      <div class="rp-step-wrap">
+        <div class="rp-dot" onclick="this.classList.toggle('done')">04</div>
+        <div class="rp-label">Table</div>
+      </div>
+      <div class="rp-line"></div>
+      <div class="rp-step-wrap">
+        <div class="rp-dot" onclick="this.classList.toggle('done')">05</div>
+        <div class="rp-label">Form</div>
+      </div>
+      <div class="rp-line"></div>
+      <div class="rp-step-wrap">
+        <div class="rp-dot" onclick="this.classList.toggle('done')">06</div>
+        <div class="rp-label">Store</div>
+      </div>
+      <div class="rp-line"></div>
+      <div class="rp-step-wrap">
+        <div class="rp-dot" onclick="this.classList.toggle('done')">07</div>
+        <div class="rp-label">Deploy</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);font-family:var(--mono);text-align:center;margin-top:4px;">← klik circle untuk tandai progress</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(event,'setup')">01. Setup & Install</button>
+    <button class="tab-btn" onclick="switchTab(event,'query')">02. TanStack Query</button>
+    <button class="tab-btn" onclick="switchTab(event,'router')">03. TanStack Router</button>
+    <button class="tab-btn" onclick="switchTab(event,'table')">04. TanStack Table</button>
+    <button class="tab-btn" onclick="switchTab(event,'form')">05. TanStack Form</button>
+    <button class="tab-btn" onclick="switchTab(event,'store')">06. TanStack Store</button>
+    <button class="tab-btn" onclick="switchTab(event,'deploy')">07. Deploy</button>
+  </div>
+
+  <!-- ======================== TAB: SETUP ======================== -->
+  <div id="tab-setup" class="tab-content active">
+
+    <div class="callout callout-saran">
+      <span class="callout-icon">💡</span>
+      <p><strong>Saran Developer:</strong> Gunakan kombinasi <strong>Vite + React + TypeScript</strong> sebagai base project. TanStack dirancang dengan TypeScript-first, jadi kamu akan dapat manfaat maksimal dari type safety bawaan mereka.</p>
+    </div>
+
+    <div class="step-section">
+      <div class="section-label">Prerequisites & Setup</div>
+
+      <div class="step-card install">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num">
+            <div class="num-badge">01</div>
+            <div class="step-title-wrap">
+              <h3>Pastikan Node.js & Package Manager</h3>
+              <div class="sub">node ≥ 18 · npm / pnpm / bun</div>
+            </div>
+          </div>
+          <button class="toggle-btn">+</button>
+        </div>
+        <div class="step-body open">
+          <p>Verifikasi versi yang terinstall. Rekomendasi: gunakan <strong>pnpm</strong> untuk speed & efisiensi disk, atau <strong>Bun</strong> jika ingin yang paling cepat.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre><span class="cm"># Cek versi</span>
+node --version    <span class="cm"># minimal v18</span>
+npm --version
+
+<span class="cm"># Install pnpm (recommended)</span>
+npm install -g pnpm
+
+<span class="cm"># Atau pakai Bun (opsional, tercepat)</span>
+curl -fsSL https://bun.sh/install | bash</pre>
+          </div>
+          <div class="tags">
+            <span class="tag tag-blue">Node 18+</span>
+            <span class="tag tag-green">pnpm recommended</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card install">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num">
+            <div class="num-badge">02</div>
+            <div class="step-title-wrap">
+              <h3>Buat Project Baru dengan Vite</h3>
+              <div class="sub">React + TypeScript template</div>
+            </div>
+          </div>
+          <button class="toggle-btn">+</button>
+        </div>
+        <div class="step-body">
+          <p>Gunakan Vite sebagai build tool. Ini jauh lebih cepat dari CRA dan fully didukung oleh TanStack ecosystem.</p>
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+            <pre><span class="cm"># Buat project baru</span>
+pnpm create vite my-tanstack-app --template react-ts
+
+<span class="cm"># Masuk ke folder & install deps</span>
+cd my-tanstack-app
+pnpm install
+
+<span class="cm"># Jalankan dev server</span>
+pnpm dev</pre>
+          </div>
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ️</span>
+            <p>Pilih template <code>react-ts</code> bukan <code>react</code> biasa. TypeScript adalah syarat utama untuk dapat intellisense penuh dari TanStack Router dan Form.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card install">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num">
+            <div class="num-badge">03</div>
+            <div class="step-title-wrap">
+              <h3>Install Semua Package TanStack Sekaligus</h3>
+              <div class="sub">Query · Router · Table · Form · Store</div>
+            </div>
+          </div>
+          <button class="toggle-btn">+</button>
+        </div>
+        <div class="step-body">
+          <p>Install semua library TanStack yang dibutuhkan beserta tools pendukungnya.</p>
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+            <pre><span class="cm"># Core TanStack packages</span>
+pnpm add @tanstack/react-query
+pnpm add @tanstack/react-router
+pnpm add @tanstack/react-table
+pnpm add @tanstack/react-form
+pnpm add @tanstack/react-store
+
+<span class="cm"># Dev tools (query devtools + router devtools)</span>
+pnpm add @tanstack/react-query-devtools
+pnpm add @tanstack/router-devtools
+
+<span class="cm"># Vite plugin untuk TanStack Router (code-gen)</span>
+pnpm add -D @tanstack/router-plugin
+
+<span class="cm"># Axios untuk HTTP (opsional, bisa pakai fetch biasa)</span>
+pnpm add axios</pre>
+          </div>
+          <div class="tags">
+            <span class="tag tag-blue">react-query</span>
+            <span class="tag tag-purple">react-router</span>
+            <span class="tag tag-orange">react-table</span>
+            <span class="tag tag-green">react-form</span>
+            <span class="tag tag-yellow">react-store</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card config">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num">
+            <div class="num-badge">04</div>
+            <div class="step-title-wrap">
+              <h3>Konfigurasi vite.config.ts</h3>
+              <div class="sub">Plugin TanStack Router untuk file-based routing</div>
+            </div>
+          </div>
+          <button class="toggle-btn">+</button>
+        </div>
+        <div class="step-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+            <pre><span class="cm">// vite.config.ts</span>
+<span class="kw">import</span> { defineConfig } <span class="kw">from</span> <span class="str">'vite'</span>
+<span class="kw">import</span> react <span class="kw">from</span> <span class="str">'@vitejs/plugin-react'</span>
+<span class="kw">import</span> { TanStackRouterVite } <span class="kw">from</span> <span class="str">'@tanstack/router-plugin/vite'</span>
+
+<span class="kw">export default</span> <span class="fn">defineConfig</span>({
+  plugins: [
+    <span class="fn">TanStackRouterVite</span>(), <span class="cm">// ← harus SEBELUM react()</span>
+    <span class="fn">react</span>(),
+  ],
+})</pre>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <p><strong>Penting:</strong> TanStackRouterVite() harus diletakkan SEBELUM plugin react(). Urutan ini krusial agar code generation berjalan dengan benar.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card config">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num">
+            <div class="num-badge">05</div>
+            <div class="step-title-wrap">
+              <h3>Setup Struktur Folder Project</h3>
+              <div class="sub">Arsitektur yang scalable</div>
+            </div>
+          </div>
+          <button class="toggle-btn">+</button>
+        </div>
+        <div class="step-body">
+          <p>Struktur folder yang direkomendasikan untuk project TanStack yang scalable:</p>
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">text</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+            <pre>src/
+├── routes/              <span class="cm">← TanStack Router (file-based)</span>
+│   ├── __root.tsx       <span class="cm">← root layout</span>
+│   ├── index.tsx        <span class="cm">← halaman /</span>
+│   ├── about.tsx        <span class="cm">← halaman /about</span>
+│   └── users/
+│       ├── index.tsx    <span class="cm">← /users</span>
+│       └── $id.tsx      <span class="cm">← /users/:id (dynamic)</span>
+├── components/          <span class="cm">← UI components</span>
+├── hooks/               <span class="cm">← custom hooks + queries</span>
+│   ├── useUsers.ts
+│   └── usePosts.ts
+├── services/            <span class="cm">← API calls</span>
+│   └── api.ts
+├── stores/              <span class="cm">← TanStack Store</span>
+├── lib/
+│   └── queryClient.ts   <span class="cm">← QueryClient config</span>
+└── main.tsx</pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================== TAB: QUERY ======================== -->
+  <div id="tab-query" class="tab-content">
+    <div class="callout callout-saran">
+      <span class="callout-icon">🚀</span>
+      <p><strong>Saran Developer:</strong> TanStack Query adalah library yang paling wajib dipelajari dulu. Ini yang paling sering dipakai di project nyata dan memberikan dampak terbesar dalam produktivitas kamu.</p>
+    </div>
+
+    <div class="step-card core">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">01</div>
+          <div class="step-title-wrap">
+            <h3>Setup QueryClient & Provider</h3>
+            <div class="sub">main.tsx configuration</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm">// src/lib/queryClient.ts</span>
+<span class="kw">import</span> { QueryClient } <span class="kw">from</span> <span class="str">'@tanstack/react-query'</span>
+
+<span class="kw">export const</span> queryClient = <span class="kw">new</span> <span class="fn">QueryClient</span>({
+  defaultOptions: {
+    queries: {
+      staleTime: <span class="num">1000</span> * <span class="num">60</span> * <span class="num">5</span>, <span class="cm">// 5 menit</span>
+      retry: <span class="num">2</span>,
+      refetchOnWindowFocus: <span class="kw">false</span>,
+    },
+  },
+})
+
+<span class="cm">// src/main.tsx</span>
+<span class="kw">import</span> { QueryClientProvider } <span class="kw">from</span> <span class="str">'@tanstack/react-query'</span>
+<span class="kw">import</span> { ReactQueryDevtools } <span class="kw">from</span> <span class="str">'@tanstack/react-query-devtools'</span>
+<span class="kw">import</span> { queryClient } <span class="kw">from</span> <span class="str">'./lib/queryClient'</span>
+
+<span class="fn">createRoot</span>(document.<span class="fn">getElementById</span>(<span class="str">'root'</span>)!).<span class="fn">render</span>(
+  &lt;QueryClientProvider client={queryClient}&gt;
+    &lt;App /&gt;
+    &lt;ReactQueryDevtools initialIsOpen={<span class="kw">false</span>} /&gt;
+  &lt;/QueryClientProvider&gt;
+)</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card core">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">02</div>
+          <div class="step-title-wrap">
+            <h3>useQuery — Fetching Data</h3>
+            <div class="sub">Cara paling dasar ambil data dari API</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm">// src/hooks/useUsers.ts</span>
+<span class="kw">import</span> { useQuery } <span class="kw">from</span> <span class="str">'@tanstack/react-query'</span>
+
+<span class="kw">type</span> User = {
+  id: <span class="kw">number</span>
+  name: <span class="kw">string</span>
+  email: <span class="kw">string</span>
+}
+
+<span class="kw">export function</span> <span class="fn">useUsers</span>() {
+  <span class="kw">return</span> <span class="fn">useQuery</span>&lt;User[]&gt;({
+    queryKey: [<span class="str">'users'</span>],
+    queryFn: <span class="kw">async</span> () =&gt; {
+      <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'https://jsonplaceholder.typicode.com/users'</span>)
+      <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="str">'Gagal fetch users'</span>)
+      <span class="kw">return</span> res.<span class="fn">json</span>()
+    },
+  })
+}
+
+<span class="cm">// Penggunaan di komponen</span>
+<span class="kw">function</span> <span class="fn">UserList</span>() {
+  <span class="kw">const</span> { data, isLoading, isError, error } = <span class="fn">useUsers</span>()
+
+  <span class="kw">if</span> (isLoading) <span class="kw">return</span> &lt;div&gt;Loading...&lt;/div&gt;
+  <span class="kw">if</span> (isError) <span class="kw">return</span> &lt;div&gt;Error: {error.message}&lt;/div&gt;
+
+  <span class="kw">return</span> &lt;ul&gt;{data?.map(u =&gt; &lt;li key={u.id}&gt;{u.name}&lt;/li&gt;)}&lt;/ul&gt;
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card core">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">03</div>
+          <div class="step-title-wrap">
+            <h3>useMutation — POST / PUT / DELETE</h3>
+            <div class="sub">Mutation dengan optimistic update</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="kw">import</span> { useMutation, useQueryClient } <span class="kw">from</span> <span class="str">'@tanstack/react-query'</span>
+
+<span class="kw">export function</span> <span class="fn">useCreateUser</span>() {
+  <span class="kw">const</span> qc = <span class="fn">useQueryClient</span>()
+
+  <span class="kw">return</span> <span class="fn">useMutation</span>({
+    mutationFn: (<span class="im">newUser</span>: Omit&lt;User, <span class="str">'id'</span>&gt;) =>
+      <span class="fn">fetch</span>(<span class="str">'/api/users'</span>, {
+        method: <span class="str">'POST'</span>,
+        body: JSON.<span class="fn">stringify</span>(newUser),
+        headers: { <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span> },
+      }).<span class="fn">then</span>(r => r.<span class="fn">json</span>()),
+
+    <span class="cm">// Invalidate cache setelah sukses → refetch otomatis!</span>
+    onSuccess: () => {
+      qc.<span class="fn">invalidateQueries</span>({ queryKey: [<span class="str">'users'</span>] })
+    },
+  })
+}</pre>
+        </div>
+        <div class="callout callout-tip">
+          <span class="callout-icon">✅</span>
+          <p><strong>Pro tip:</strong> Gunakan <code>invalidateQueries</code> untuk auto-refetch data setelah mutation. Ini bikin UI selalu sinkron dengan server tanpa manual setState.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================== TAB: ROUTER ======================== -->
+  <div id="tab-router" class="tab-content">
+    <div class="callout callout-saran">
+      <span class="callout-icon">🧭</span>
+      <p><strong>Saran Developer:</strong> TanStack Router adalah type-safe router pertama untuk React. Keunggulan utamanya adalah <strong>fully type-safe navigation</strong> — kamu tidak bisa salah tulis path atau params karena TypeScript akan langsung complain.</p>
+    </div>
+
+    <div class="step-card core">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">01</div>
+          <div class="step-title-wrap">
+            <h3>Buat Root Route & Router</h3>
+            <div class="sub">__root.tsx + main.tsx setup</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm">// src/routes/__root.tsx</span>
+<span class="kw">import</span> { createRootRoute, Link, Outlet } <span class="kw">from</span> <span class="str">'@tanstack/react-router'</span>
+
+<span class="kw">export const</span> Route = <span class="fn">createRootRoute</span>({
+  <span class="fn">component</span>: () => (
+    &lt;&gt;
+      &lt;nav&gt;
+        &lt;Link to="/"&gt;Home&lt;/Link&gt;
+        &lt;Link to="/users"&gt;Users&lt;/Link&gt;
+      &lt;/nav&gt;
+      &lt;Outlet /&gt; <span class="cm">{/* child routes render di sini */}</span>
+    &lt;/&gt;
+  ),
+})
+
+<span class="cm">// src/main.tsx — tambahkan router</span>
+<span class="kw">import</span> { RouterProvider, createRouter } <span class="kw">from</span> <span class="str">'@tanstack/react-router'</span>
+<span class="kw">import</span> { routeTree } <span class="kw">from</span> <span class="str">'./routeTree.gen'</span> <span class="cm">// auto-generated!</span>
+
+<span class="kw">const</span> router = <span class="fn">createRouter</span>({ routeTree })
+
+<span class="cm">// TypeScript magic ✨</span>
+<span class="kw">declare module</span> <span class="str">'@tanstack/react-router'</span> {
+  <span class="kw">interface</span> Register { router: <span class="kw">typeof</span> router }
+}
+
+<span class="cm">// Di render:</span>
+&lt;RouterProvider router={router} /&gt;</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card core">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">02</div>
+          <div class="step-title-wrap">
+            <h3>Dynamic Route & Route Loader</h3>
+            <div class="sub">Params + data loading sebelum render</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm">// src/routes/users/$id.tsx</span>
+<span class="kw">import</span> { createFileRoute } <span class="kw">from</span> <span class="str">'@tanstack/react-router'</span>
+
+<span class="kw">export const</span> Route = <span class="fn">createFileRoute</span>(<span class="str">'/users/$id'</span>)({
+  <span class="cm">// Loader: fetch data SEBELUM komponen render</span>
+  loader: <span class="kw">async</span> ({ params }) => {
+    <span class="kw">const</span> user = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`/api/users/</span>${params.id}<span class="str">`</span>).<span class="fn">then</span>(r => r.<span class="fn">json</span>())
+    <span class="kw">return</span> { user }
+  },
+
+  component: <span class="kw">function</span> <span class="fn">UserDetail</span>() {
+    <span class="kw">const</span> { user } = Route.<span class="fn">useLoaderData</span>() <span class="cm">// fully typed!</span>
+    <span class="kw">const</span> { id } = Route.<span class="fn">useParams</span>()       <span class="cm">// typed params</span>
+
+    <span class="kw">return</span> &lt;div&gt;{user.name}&lt;/div&gt;
+  },
+})</pre>
+        </div>
+        <div class="callout callout-tip">
+          <span class="callout-icon">✅</span>
+          <p><strong>Game changer:</strong> Route loader terintegrasi sempurna dengan TanStack Query. Kamu bisa preload query di loader sehingga data sudah ada saat komponen mount — tidak ada loading state!</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================== TAB: TABLE ======================== -->
+  <div id="tab-table" class="tab-content">
+    <div class="callout callout-saran">
+      <span class="callout-icon">📋</span>
+      <p><strong>Saran Developer:</strong> TanStack Table adalah headless — dia tidak punya UI bawaan. Kamu bebas render tabel dengan HTML biasa, Tailwind, atau component library apapun. Ini yang bikin dia sangat fleksibel.</p>
+    </div>
+
+    <div class="step-card core">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">01</div>
+          <div class="step-title-wrap">
+            <h3>Basic Table Setup</h3>
+            <div class="sub">Column definition + useReactTable</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="kw">import</span> {
+  useReactTable, getCoreRowModel,
+  getSortedRowModel, getFilteredRowModel,
+  flexRender, <span class="im">ColumnDef</span>
+} <span class="kw">from</span> <span class="str">'@tanstack/react-table'</span>
+
+<span class="kw">const</span> columns: <span class="im">ColumnDef</span>&lt;User&gt;[] = [
+  { accessorKey: <span class="str">'id'</span>, header: <span class="str">'ID'</span> },
+  { accessorKey: <span class="str">'name'</span>, header: <span class="str">'Nama'</span> },
+  { accessorKey: <span class="str">'email'</span>, header: <span class="str">'Email'</span> },
+  {
+    id: <span class="str">'actions'</span>,
+    header: <span class="str">'Aksi'</span>,
+    cell: ({ row }) => (
+      &lt;button onClick={() =&gt; <span class="fn">handleEdit</span>(row.original.id)}&gt;
+        Edit
+      &lt;/button&gt;
+    ),
+  },
+]
+
+<span class="kw">function</span> <span class="fn">UserTable</span>({ data }: { data: User[] }) {
+  <span class="kw">const</span> table = <span class="fn">useReactTable</span>({
+    data,
+    columns,
+    getCoreRowModel: <span class="fn">getCoreRowModel</span>(),
+    getSortedRowModel: <span class="fn">getSortedRowModel</span>(),  <span class="cm">// sorting</span>
+    getFilteredRowModel: <span class="fn">getFilteredRowModel</span>(), <span class="cm">// filter</span>
+  })
+
+  <span class="kw">return</span> (
+    &lt;table&gt;
+      &lt;thead&gt;{table.<span class="fn">getHeaderGroups</span>().<span class="fn">map</span>(hg => (
+        &lt;tr key={hg.id}&gt;{hg.headers.<span class="fn">map</span>(h => (
+          &lt;th key={h.id}&gt;
+            {<span class="fn">flexRender</span>(h.column.columnDef.header, h.<span class="fn">getContext</span>())}
+          &lt;/th&gt;
+        ))}&lt;/tr&gt;
+      ))}&lt;/thead&gt;
+      &lt;tbody&gt;{table.<span class="fn">getRowModel</span>().rows.<span class="fn">map</span>(row => (
+        &lt;tr key={row.id}&gt;{row.<span class="fn">getVisibleCells</span>().<span class="fn">map</span>(cell => (
+          &lt;td key={cell.id}&gt;
+            {<span class="fn">flexRender</span>(cell.column.columnDef.cell, cell.<span class="fn">getContext</span>())}
+          &lt;/td&gt;
+        ))}&lt;/tr&gt;
+      ))}&lt;/tbody&gt;
+    &lt;/table&gt;
+  )
+}</pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================== TAB: FORM ======================== -->
+  <div id="tab-form" class="tab-content">
+    <div class="callout callout-saran">
+      <span class="callout-icon">📝</span>
+      <p><strong>Saran Developer:</strong> TanStack Form masih relatif baru tapi sangat powerful. Keunggulannya ada di validasi yang benar-benar type-safe dan async validation bawaan. Kombinasikan dengan <strong>Zod</strong> untuk skema validasi yang lengkap.</p>
+    </div>
+
+    <div class="step-card core">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">01</div>
+          <div class="step-title-wrap">
+            <h3>Basic Form dengan Zod Validation</h3>
+            <div class="sub">useForm + field validation</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm"># Install Zod untuk validasi schema</span>
+pnpm add zod @tanstack/zod-form-adapter</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="kw">import</span> { useForm } <span class="kw">from</span> <span class="str">'@tanstack/react-form'</span>
+<span class="kw">import</span> { zodValidator } <span class="kw">from</span> <span class="str">'@tanstack/zod-form-adapter'</span>
+<span class="kw">import</span> { z } <span class="kw">from</span> <span class="str">'zod'</span>
+
+<span class="kw">const</span> schema = z.<span class="fn">object</span>({
+  name: z.<span class="fn">string</span>().<span class="fn">min</span>(<span class="num">3</span>, <span class="str">'Nama minimal 3 karakter'</span>),
+  email: z.<span class="fn">string</span>().<span class="fn">email</span>(<span class="str">'Email tidak valid'</span>),
+})
+
+<span class="kw">function</span> <span class="fn">UserForm</span>() {
+  <span class="kw">const</span> form = <span class="fn">useForm</span>({
+    defaultValues: { name: <span class="str">''</span>, email: <span class="str">''</span> },
+    validatorAdapter: <span class="fn">zodValidator</span>(),
+    validators: { onChange: schema },
+    onSubmit: <span class="kw">async</span> ({ value }) => {
+      console.<span class="fn">log</span>(<span class="str">'Submit:'</span>, value)
+    },
+  })
+
+  <span class="kw">return</span> (
+    &lt;form onSubmit={e => { e.<span class="fn">preventDefault</span>(); form.<span class="fn">handleSubmit</span>() }}&gt;
+      &lt;form.Field name="name"
+        children={(field) => (
+          &lt;&gt;
+            &lt;input
+              value={field.state.value}
+              onChange={e => field.<span class="fn">handleChange</span>(e.target.value)}
+            /&gt;
+            {field.state.meta.errors[<span class="num">0</span>] &amp;&amp; (
+              &lt;span style={{ color: <span class="str">'red'</span> }}&gt;
+                {field.state.meta.errors[<span class="num">0</span>]}
+              &lt;/span&gt;
+            )}
+          &lt;/&gt;
+        )}
+      /&gt;
+      &lt;button type="submit"&gt;Kirim&lt;/button&gt;
+    &lt;/form&gt;
+  )
+}</pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================== TAB: STORE ======================== -->
+  <div id="tab-store" class="tab-content">
+    <div class="callout callout-saran">
+      <span class="callout-icon">🏪</span>
+      <p><strong>Saran Developer:</strong> TanStack Store sangat ringan. Gunakan ini untuk state UI seperti sidebar open/close, tema, atau preference user. Untuk server state (API data), tetap pakai TanStack Query — jangan dicampur.</p>
+    </div>
+
+    <div class="step-card core">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">01</div>
+          <div class="step-title-wrap">
+            <h3>Buat Store Global</h3>
+            <div class="sub">Reactive state tanpa boilerplate</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm">// src/stores/uiStore.ts</span>
+<span class="kw">import</span> { Store, useStore } <span class="kw">from</span> <span class="str">'@tanstack/react-store'</span>
+
+<span class="kw">interface</span> UIState {
+  sidebarOpen: <span class="kw">boolean</span>
+  theme: <span class="str">'light'</span> | <span class="str">'dark'</span>
+  notifications: <span class="kw">number</span>
+}
+
+<span class="kw">export const</span> uiStore = <span class="kw">new</span> Store&lt;UIState&gt;({
+  sidebarOpen: <span class="kw">false</span>,
+  theme: <span class="str">'dark'</span>,
+  notifications: <span class="num">0</span>,
+})
+
+<span class="cm">// Actions</span>
+<span class="kw">export const</span> toggleSidebar = () =>
+  uiStore.<span class="fn">setState</span>(s => ({ ...s, sidebarOpen: !s.sidebarOpen }))
+
+<span class="kw">export const</span> setTheme = (theme: UIState[<span class="str">'theme'</span>]) =>
+  uiStore.<span class="fn">setState</span>(s => ({ ...s, theme }))
+
+<span class="cm">// Penggunaan di komponen</span>
+<span class="kw">function</span> <span class="fn">Navbar</span>() {
+  <span class="kw">const</span> sidebarOpen = <span class="fn">useStore</span>(uiStore, s => s.sidebarOpen)
+  <span class="kw">const</span> theme = <span class="fn">useStore</span>(uiStore, s => s.theme)
+
+  <span class="kw">return</span> (
+    &lt;nav&gt;
+      &lt;button onClick={toggleSidebar}&gt;
+        {sidebarOpen ? <span class="str">'Tutup'</span> : <span class="str">'Buka'</span>} Sidebar
+      &lt;/button&gt;
+      &lt;span&gt;Theme: {theme}&lt;/span&gt;
+    &lt;/nav&gt;
+  )
+}</pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================== TAB: DEPLOY ======================== -->
+  <div id="tab-deploy" class="tab-content">
+    <div class="callout callout-saran">
+      <span class="callout-icon">🚀</span>
+      <p><strong>Saran Developer:</strong> Untuk project TanStack yang menggunakan file-based routing, pastikan server kamu dikonfigurasi untuk redirect semua request ke <code>index.html</code> (SPA fallback). Tanpa ini, refresh halaman akan 404!</p>
+    </div>
+
+    <div class="step-card deploy">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">01</div>
+          <div class="step-title-wrap">
+            <h3>Build untuk Production</h3>
+            <div class="sub">Optimize & bundle</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm"># Build production bundle</span>
+pnpm build
+
+<span class="cm"># Preview hasil build secara lokal</span>
+pnpm preview
+
+<span class="cm"># Output ada di folder /dist</span></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm">// vite.config.ts — tambahkan base URL jika deploy ke subfolder</span>
+<span class="kw">export default</span> <span class="fn">defineConfig</span>({
+  base: <span class="str">'/'</span>, <span class="cm">// ganti jika app di subfolder, misal '/app/'</span>
+  build: {
+    rollupOptions: {
+      output: {
+        <span class="cm">// Code splitting otomatis per route</span>
+        manualChunks: { vendor: [<span class="str">'react'</span>, <span class="str">'react-dom'</span>] }
+      }
+    }
+  }
+})</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card deploy">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">02</div>
+          <div class="step-title-wrap">
+            <h3>Deploy ke Vercel (Recommended)</h3>
+            <div class="sub">Zero config deployment</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm"># Install Vercel CLI</span>
+npm install -g vercel
+
+<span class="cm"># Deploy (pertama kali)</span>
+vercel
+
+<span class="cm"># Deploy production</span>
+vercel --prod
+
+<span class="cm"># Atau push ke GitHub → auto deploy via Vercel dashboard</span></pre>
+        </div>
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <p>Vercel otomatis detect Vite project. Tidak perlu konfigurasi tambahan. SPA routing sudah dihandle otomatis.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card deploy">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">03</div>
+          <div class="step-title-wrap">
+            <h3>Deploy ke Netlify / VPS</h3>
+            <div class="sub">Config redirect untuk SPA</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">text</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm"># public/_redirects (untuk Netlify)</span>
+/* /index.html 200</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">nginx</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm"># Nginx config untuk VPS</span>
+<span class="kw">location</span> / {
+  root /var/www/dist;
+  try_files $uri $uri/ /index.html;  <span class="cm">← SPA fallback</span>
+}</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm"># CI/CD via GitHub Actions (.github/workflows/deploy.yml)</span>
+<span class="kw">name:</span> Deploy
+<span class="kw">on:</span>
+  push:
+    branches: [main]
+<span class="kw">jobs:</span>
+  <span class="kw">deploy:</span>
+    <span class="kw">runs-on:</span> ubuntu-latest
+    <span class="kw">steps:</span>
+      - uses: actions/checkout@v3
+      - run: pnpm install && pnpm build
+      - run: <span class="cm"># scp atau rsync ke VPS</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card tip">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-num">
+          <div class="num-badge">04</div>
+          <div class="step-title-wrap">
+            <h3>Checklist Sebelum Deploy</h3>
+            <div class="sub">Production readiness</div>
+          </div>
+        </div>
+        <button class="toggle-btn">+</button>
+      </div>
+      <div class="step-body">
+        <ul class="checklist">
+          <li>Environment variables sudah dipindah ke .env.production</li>
+          <li>React Query devtools hanya aktif di development</li>
+          <li>Error boundaries sudah dipasang untuk catch runtime errors</li>
+          <li>Loading states & skeleton UI untuk semua async operations</li>
+          <li>Lighthouse score > 90 untuk performance</li>
+          <li>Bundle size dicek dengan <code>vite-bundle-visualizer</code></li>
+          <li>Route code splitting aktif (TanStack Router otomatis)</li>
+          <li>CORS sudah dikonfigurasi di backend</li>
+          <li>API base URL sudah dari environment variable</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    <p>🎯 <strong>Saran Urutan Belajar:</strong> Query → Router → Table → Form → Store<br>
+    Mulai dari Query karena paling sering dipakai. Router kedua karena fundamental. Table & Form bisa dipelajari sesuai kebutuhan project.<br><br>
+    💬 Masukan: Gabungkan TanStack dengan <strong>Tailwind CSS + shadcn/ui</strong> untuk UI yang cepat dibangun dan profesional.</p>
+  </div>
+
+</div>
+
+<script>
+function switchTab(e, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function toggleStep(header) {
+  const body = header.nextElementSibling;
+  const btn = header.querySelector('.toggle-btn');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  btn.textContent = isOpen ? '+' : '−';
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
